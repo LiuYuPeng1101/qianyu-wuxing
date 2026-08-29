@@ -54,6 +54,7 @@
     });
   }
   var pickedYear=1990,pickedMonth=7,now=new Date().getFullYear();
+  if(document.getElementById("yearPicker")){
   function closePickers(except){
     document.querySelectorAll(".picker.open").forEach(function(picker){
       if(picker!==except){picker.classList.remove("open");picker.querySelector(".picker-button").setAttribute("aria-expanded","false")}
@@ -103,10 +104,12 @@
     e.fortunes.forEach(function(f){var li=document.createElement("li");li.className="fortune-item";li.innerHTML='<div><strong>'+f[0]+'</strong><span>'+f[1]+'</span></div>';fl.appendChild(li)});
     document.body.classList.add("result-mode");document.getElementById("result").classList.add("show");window.scrollTo({top:0,behavior:"smooth"});
   }
-  function reset(){document.body.classList.remove("result-mode");document.getElementById("result").classList.remove("show");showView("natal",false);setTimeout(function(){document.getElementById("formPanel").scrollIntoView({behavior:"smooth",block:"start"})},80)}
+  function reset(){document.body.classList.remove("result-mode");document.getElementById("result").classList.remove("show");setTimeout(function(){document.getElementById("formPanel").scrollIntoView({behavior:"smooth",block:"start"})},80)}
   document.getElementById("go").addEventListener("click",render);
   document.getElementById("resultBack").addEventListener("click",reset);
   document.getElementById("again").addEventListener("click",reset);
+  }
+  if(document.getElementById("guideRail")){
   var guideRail=document.getElementById("guideRail"),conceptDisc=document.getElementById("conceptDisc"),discTimer;
   var guideViews={
     fortune:{kicker:"五行运势",main:"顺势",sub:"知强弱 · 取平衡",background:"rgba(68,57,45,.84)",panel:"fortunePanel"},
@@ -129,6 +132,8 @@
     if(shouldScroll!==false){setTimeout(function(){document.getElementById(data.panel).scrollIntoView({behavior:"smooth",block:"start"})},260)}
   }
   document.querySelectorAll(".guide-tag").forEach(function(button){button.addEventListener("click",function(){showView(button.dataset.view,true)})});
+  document.querySelector(".guide-tag.active").setAttribute("aria-current","true");
+  }
   document.querySelectorAll(".element-choice").forEach(function(button){button.addEventListener("click",function(){
     var element=button.dataset.element,isMetal=element==="金";
     document.querySelectorAll(".element-choice").forEach(function(item){var active=item===button;item.classList.toggle("active",active);item.setAttribute("aria-selected",active?"true":"false")});
@@ -138,5 +143,4 @@
       var empty=document.getElementById("stylesEmpty");empty.querySelector("span").textContent=element+" · ELEMENT LOOKS";empty.querySelector("p").textContent=element+"系款式正在整理中，先为你保留这份期待。";
     }
   })});
-  document.querySelector(".guide-tag.active").setAttribute("aria-current","true");
 })();

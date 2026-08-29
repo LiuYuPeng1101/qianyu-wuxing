@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#263028">
+<title>本命推演 · 千屿优奈</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body class="subpage natal-page">
+<main class="app">
+  <header class="page-top natal-top">
+    <a class="page-back" href="index.html">返回首页</a>
+    <img src="assets/qianyu-younai-logo.png" alt="千屿优奈">
+    <div class="page-top-copy"><span>NATAL ELEMENT · 本命推演</span><h1>推演你的<br>本命五行</h1><p>以出生年份与月份，寻找专属能量色</p></div>
+  </header>
+  <section class="form-panel" id="formPanel">
+    <div class="form-head"><div class="form-title">推演你的本命五行</div><div class="form-sub">阳历出生信息</div></div>
+    <div class="field-row">
+      <div class="field"><label>出生年份</label><div class="picker" id="yearPicker"><button class="picker-button" id="yearButton" type="button" aria-haspopup="listbox" aria-expanded="false"><span class="picker-value">1990 年</span><span class="picker-action">更改</span></button><div class="picker-menu year-menu" id="yearMenu" role="listbox" aria-label="出生年份"></div></div></div>
+      <div class="field"><label>出生月份</label><div class="picker" id="monthPicker"><button class="picker-button" id="monthButton" type="button" aria-haspopup="listbox" aria-expanded="false"><span class="picker-value">7 月</span><span class="picker-action">更改</span></button><div class="picker-menu month-menu" id="monthMenu" role="listbox" aria-label="出生月份"></div></div></div>
+    </div>
+    <button class="go" id="go" type="button">开始推演</button>
+    <div class="form-note">年命以立春为界 · 一月出生自动归入上一年命</div>
+  </section>
+  <section class="result" id="result" aria-live="polite">
+    <div class="result-cover">
+      <img class="result-photo" src="assets/qianyu-hero-v2.png" alt="">
+      <div class="photo-shade"></div><div class="photo-grain"></div>
+      <div class="result-nav"><button class="back" id="resultBack" type="button">返回推演</button><div class="result-brand"><img src="assets/qianyu-younai-logo.png" alt="千屿优奈"></div><div class="result-meta"><strong id="resultYear"></strong><span id="ganzhi"></span></div></div>
+      <div class="result-hero"><div class="element-seal" id="seal"></div><div class="result-heading"><div class="overline">YOUR ELEMENT · 五行能量档案</div><h2 id="resultTitle"></h2><p id="resultNayin"></p></div></div>
+    </div>
+    <div class="result-sheet">
+      <div class="section-eyebrow">01 · CORE ATTRIBUTE</div>
+      <article class="core-card"><h3 class="core-title" id="coreTitle"></h3><p class="core-note" id="coreNote"></p><div class="body-row"><span>身体对应</span><strong id="organ"></strong></div></article>
+      <section class="palette-section"><div class="section-head"><div><div class="section-eyebrow">02 · NAIL PALETTE</div><h3>专属甲油色谱</h3></div><p id="paletteLabel"></p></div><div class="swatch-grid" id="swatches"></div></section>
+      <section class="fortune-section"><div class="section-head"><div><div class="section-eyebrow">03 · ENERGY GUIDE</div><h3 id="fortuneTitle"></h3></div><p>指尖能量建议</p></div><ol class="fortune-list" id="fortunes"></ol></section>
+      <button class="again" id="again" type="button">重新推演</button>
+      <a class="result-home" href="index.html">返回首页</a>
+      <div class="disclaimer">千屿优奈 · 五行美甲色彩灵感<br>纳音五行仅供民俗文化与审美参考，不构成健康或投资建议</div>
+    </div>
+  </section>
+</main>
+<script src="app.js"></script>
+</body>
+</html>
