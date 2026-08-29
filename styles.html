@@ -29,6 +29,21 @@
     <a class="page-cta muted" href="index.html">返回首页</a>
   </section>
 </main>
+<div class="image-viewer" id="imageViewer" role="dialog" aria-modal="true" aria-label="美甲款式大图查看" hidden>
+  <div class="viewer-toolbar">
+    <strong class="viewer-price">￥680</strong>
+    <div class="viewer-controls" aria-label="大图控制">
+      <button class="viewer-button" id="viewerZoomOut" type="button">缩小</button>
+      <button class="viewer-button" id="viewerReset" type="button">复位</button>
+      <button class="viewer-button" id="viewerZoomIn" type="button">放大</button>
+      <button class="viewer-button viewer-close" id="viewerClose" type="button">关闭</button>
+    </div>
+  </div>
+  <div class="viewer-stage" id="viewerStage" tabindex="0">
+    <img class="viewer-image" id="viewerImage" src="data:," alt="" draggable="false">
+    <p class="viewer-hint">双指或滚轮缩放 · 放大后拖动查看细节</p>
+  </div>
+</div>
 <script src="app.js"></script>
 </body>
 </html>
