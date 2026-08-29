@@ -145,7 +145,7 @@
     document.getElementById("paletteLabel").textContent=e.palette;
     document.getElementById("fortuneTitle").textContent=r.elem+"属性美甲运势";
     var sw=document.getElementById("swatches");sw.innerHTML="";
-    e.colors.forEach(function(c){var item=document.createElement("div");item.className="swatch";item.innerHTML='<div class="swatch-color" style="background:'+c[1]+'"></div><span class="swatch-name">'+c[0]+'</span>';sw.appendChild(item)});
+    e.colors.forEach(function(c){var item=document.createElement("div");item.className="swatch";item.innerHTML='<div class="swatch-color" style="background:'+c[1]+'" aria-hidden="true"></div><span class="swatch-name">'+c[0]+'</span><small class="swatch-hex">'+c[1].toUpperCase()+'</small>';sw.appendChild(item)});
     var fl=document.getElementById("fortunes");fl.innerHTML="";
     e.fortunes.forEach(function(f){var li=document.createElement("li");li.className="fortune-item";li.innerHTML='<div><strong>'+f[0]+'</strong><span>'+f[1]+'</span></div>';fl.appendChild(li)});
     document.body.classList.add("result-mode");document.getElementById("result").classList.add("show");window.scrollTo({top:0,behavior:"smooth"});
