@@ -8,9 +8,9 @@
 <link rel="icon" href="data:,">
 <link rel="stylesheet" href="styles.css">
 </head>
-<body>
-<main class="app" id="app">
-  <section class="home" id="home">
+<body class="home-page">
+<main class="app">
+  <section class="home">
     <img class="hero-image" src="assets/qianyu-hero-v2.png" alt="水面光影中展示美甲与珠宝的手部">
     <div class="photo-shade"></div><div class="photo-grain"></div>
     <div class="topbar">
@@ -22,109 +22,18 @@
       <h1>让你的指尖，<br>拥有专属能量色</h1>
       <p>不是“缺什么就补什么”，而是找到此刻真正适合你的五行气质与色彩秩序。</p>
     </div>
-    <div class="concept-disc" id="conceptDisc" aria-live="polite">
-      <span class="disc-kicker" id="discKicker">千屿</span>
-      <strong class="disc-main" id="discMain">五行</strong>
-      <span class="disc-sub" id="discSub">美甲能量</span>
+    <div class="concept-disc" aria-hidden="true">
+      <span class="disc-kicker">五行运势</span>
+      <strong class="disc-main">顺势</strong>
+      <span class="disc-sub">知强弱 · 取平衡</span>
     </div>
-    <nav class="guide-rail" id="guideRail" aria-label="页面内容">
+    <nav class="guide-rail" aria-label="进入五行内容">
       <span class="rail-indicator" aria-hidden="true"></span>
-      <button class="guide-tag active" type="button" data-view="fortune" data-index="0"><span class="guide-name">运势解读</span><span class="guide-meta">强弱 · 平衡</span></button>
-      <button class="guide-tag" type="button" data-view="natal" data-index="1"><span class="guide-name">本命推演</span><span class="guide-meta">出生年月</span></button>
-      <button class="guide-tag" type="button" data-view="styles" data-index="2"><span class="guide-name">五行款式</span><span class="guide-meta">木 · 火 · 土 · 金 · 水</span></button>
+      <a class="guide-tag active" href="fortune.html"><span class="guide-name">运势解读</span><span class="guide-meta">强弱 · 平衡</span></a>
+      <a class="guide-tag" href="natal.html"><span class="guide-name">本命推演</span><span class="guide-meta">出生年月</span></a>
+      <a class="guide-tag" href="styles.html"><span class="guide-name">五行款式</span><span class="guide-meta">木 · 火 · 土 · 金 · 水</span></a>
     </nav>
   </section>
-
-  <section class="fortune-intro content-panel" id="fortunePanel">
-    <div class="panel-eyebrow">FORTUNE READING · 运势解读</div>
-    <div class="fortune-intro-grid">
-      <h2>顺五行之势，<br>找到此刻的平衡</h2>
-      <span class="fortune-mark">五运</span>
-    </div>
-    <p>五行运势不是简单地“缺什么补什么”，而是观察木、火、土、金、水在当下的强弱与流动。顺势选色，可以借木的生发、火的表达、土的稳定、金的决断、水的智慧，帮助你在事业、人缘、情绪与行动节奏中找到更协调的状态。美甲在这里是一种日常提醒：用适合自己的颜色与质感强化优势，也为失衡之处留出调整空间。</p>
-    <div class="fortune-principles" aria-label="五行运势原则">
-      <span><b>01</b>观强弱</span><span><b>02</b>取平衡</span><span><b>03</b>顺时势</span>
-    </div>
-  </section>
-
-  <section class="form-panel content-panel" id="formPanel" hidden>
-      <div class="form-head"><div class="form-title">推演你的本命五行</div><div class="form-sub">阳历出生信息</div></div>
-      <div class="field-row">
-        <div class="field">
-          <label>出生年份</label>
-          <div class="picker" id="yearPicker">
-            <button class="picker-button" id="yearButton" type="button" aria-haspopup="listbox" aria-expanded="false"><span class="picker-value">1990 年</span><span class="picker-action">更改</span></button>
-            <div class="picker-menu year-menu" id="yearMenu" role="listbox" aria-label="出生年份"></div>
-          </div>
-        </div>
-        <div class="field">
-          <label>出生月份</label>
-          <div class="picker" id="monthPicker">
-            <button class="picker-button" id="monthButton" type="button" aria-haspopup="listbox" aria-expanded="false"><span class="picker-value">7 月</span><span class="picker-action">更改</span></button>
-            <div class="picker-menu month-menu" id="monthMenu" role="listbox" aria-label="出生月份"></div>
-          </div>
-        </div>
-      </div>
-      <button class="go" id="go" type="button">开始推演</button>
-      <div class="form-note">年命以立春为界 · 一月出生自动归入上一年命</div>
-  </section>
-
-  <section class="styles-panel content-panel" id="stylesPanel" hidden>
-    <div class="styles-heading">
-      <div><div class="panel-eyebrow">FIVE ELEMENT LOOKS · 五行款式</div><h2>以五行为序，<br>挑选你的指尖风格</h2></div>
-      <p>选择五行<br>查看专属款式</p>
-    </div>
-    <div class="element-picker" role="tablist" aria-label="选择五行款式">
-      <button class="element-choice wood" type="button" role="tab" data-element="木"><span>木</span><small>生发</small></button>
-      <button class="element-choice fire" type="button" role="tab" data-element="火"><span>火</span><small>热烈</small></button>
-      <button class="element-choice earth" type="button" role="tab" data-element="土"><span>土</span><small>安定</small></button>
-      <button class="element-choice metal" type="button" role="tab" data-element="金"><span>金</span><small>清贵</small></button>
-      <button class="element-choice water" type="button" role="tab" data-element="水"><span>水</span><small>灵动</small></button>
-    </div>
-    <div class="styles-empty" id="stylesEmpty">
-      <span>SELECT YOUR ELEMENT</span>
-      <p>点击上方五行，展开专属美甲款式</p>
-    </div>
-    <div class="metal-showcase" id="metalShowcase" hidden>
-      <div class="showcase-heading"><span>METAL · 金</span><h3>金系美甲灵感</h3><p>8 组层叠款式 · 每组可独立左右滑动</p></div>
-      <div class="carousel-stack" id="carouselStack" aria-live="polite"></div>
-    </div>
-  </section>
-
-  <section class="result" id="result" aria-live="polite">
-    <div class="result-cover">
-      <img class="result-photo" src="assets/qianyu-hero-v2.png" alt="">
-      <div class="photo-shade"></div><div class="photo-grain"></div>
-      <div class="result-nav">
-        <button class="back" id="resultBack" type="button">返回推演</button>
-        <div class="result-brand"><img src="assets/qianyu-younai-logo.png" alt="千屿优奈"></div>
-        <div class="result-meta"><strong id="resultYear"></strong><span id="ganzhi"></span></div>
-      </div>
-      <div class="result-hero">
-        <div class="element-seal" id="seal"></div>
-        <div class="result-heading"><div class="overline">YOUR ELEMENT · 五行能量档案</div><h2 id="resultTitle"></h2><p id="resultNayin"></p></div>
-      </div>
-    </div>
-    <div class="result-sheet">
-      <div class="section-eyebrow">01 · CORE ATTRIBUTE</div>
-      <article class="core-card">
-        <h3 class="core-title" id="coreTitle"></h3>
-        <p class="core-note" id="coreNote"></p>
-        <div class="body-row"><span>身体对应</span><strong id="organ"></strong></div>
-      </article>
-      <section class="palette-section">
-        <div class="section-head"><div><div class="section-eyebrow">02 · NAIL PALETTE</div><h3>专属甲油色谱</h3></div><p id="paletteLabel"></p></div>
-        <div class="swatch-grid" id="swatches"></div>
-      </section>
-      <section class="fortune-section">
-        <div class="section-head"><div><div class="section-eyebrow">03 · ENERGY GUIDE</div><h3 id="fortuneTitle"></h3></div><p>指尖能量建议</p></div>
-        <ol class="fortune-list" id="fortunes"></ol>
-      </section>
-      <button class="again" id="again" type="button">重新推演</button>
-      <div class="disclaimer">千屿优奈 · 五行美甲色彩灵感<br>纳音五行仅供民俗文化与审美参考，不构成健康或投资建议</div>
-    </div>
-  </section>
 </main>
-<script src="app.js"></script>
 </body>
 </html>

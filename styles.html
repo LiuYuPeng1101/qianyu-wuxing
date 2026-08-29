@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#263028">
+<title>五行款式 · 千屿优奈</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body class="subpage styles-page">
+<main class="app">
+  <header class="page-top styles-top">
+    <a class="page-back" href="index.html">返回首页</a>
+    <img src="assets/qianyu-younai-logo.png" alt="千屿优奈">
+    <div class="page-top-copy"><span>FIVE ELEMENT LOOKS · 五行款式</span><h1>以五行为序，<br>挑选指尖风格</h1><p>木 · 火 · 土 · 金 · 水</p></div>
+  </header>
+  <section class="styles-panel inner-content" id="stylesPanel">
+    <div class="styles-heading"><div><div class="panel-eyebrow">01 · SELECT ELEMENT</div><h2>五行美甲</h2></div><p>选择五行<br>查看专属款式</p></div>
+    <div class="element-picker" role="tablist" aria-label="选择五行款式">
+      <button class="element-choice wood" type="button" role="tab" data-element="木"><span>木</span><small>生发</small></button>
+      <button class="element-choice fire" type="button" role="tab" data-element="火"><span>火</span><small>热烈</small></button>
+      <button class="element-choice earth" type="button" role="tab" data-element="土"><span>土</span><small>安定</small></button>
+      <button class="element-choice metal" type="button" role="tab" data-element="金"><span>金</span><small>清贵</small></button>
+      <button class="element-choice water" type="button" role="tab" data-element="水"><span>水</span><small>灵动</small></button>
+    </div>
+    <div class="styles-empty" id="stylesEmpty"><span>SELECT YOUR ELEMENT</span><p>点击上方五行，展开专属美甲款式</p></div>
+    <div class="metal-showcase" id="metalShowcase" hidden><div class="showcase-heading"><span>METAL · 金</span><h3>金系美甲灵感</h3><p>8 组层叠款式 · 每组可独立左右滑动</p></div><div class="carousel-stack" id="carouselStack" aria-live="polite"></div></div>
+    <a class="page-cta muted" href="index.html">返回首页</a>
+  </section>
+</main>
+<script src="app.js"></script>
+</body>
+</html>
