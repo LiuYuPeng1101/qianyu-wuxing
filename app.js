@@ -18,21 +18,39 @@
     ["7 (1).png","7 (2).png","7 (3).png"],
     ["8 (1).png","8 (2).png","8 (3).png"]
   ];
-  function renderMetalLooks(activeIndex){
-    var section=document.getElementById("nailInspiration"),tabs=document.getElementById("lookTabs"),gallery=document.getElementById("lookGallery");
-    section.hidden=false;tabs.innerHTML="";gallery.innerHTML="";
-    METAL_LOOKS.forEach(function(files,index){
-      var button=document.createElement("button"),selected=index===activeIndex;
-      button.type="button";button.className="look-tab"+(selected?" active":"");button.setAttribute("role","tab");button.setAttribute("aria-selected",selected?"true":"false");button.textContent=String(index+1).padStart(2,"0");
-      button.addEventListener("click",function(){renderMetalLooks(index)});
-      tabs.appendChild(button);
-    });
-    var selectedFiles=METAL_LOOKS[activeIndex];
-    gallery.className="look-gallery count-"+selectedFiles.length;
-    selectedFiles.forEach(function(file,index){
-      var figure=document.createElement("figure"),image=document.createElement("img"),caption=document.createElement("figcaption");
-      figure.className="look-card";image.src=encodeURI("meijia/jin/"+file);image.alt="金系美甲方案 "+(activeIndex+1)+" · 款式 "+(index+1);image.loading="lazy";image.decoding="async";
-      caption.textContent="款式 "+String(index+1).padStart(2,"0");figure.appendChild(image);figure.appendChild(caption);gallery.appendChild(figure);
+  var carouselIndexes=METAL_LOOKS.map(function(){return 0});
+  function lookSrc(file){return encodeURI("meijia/jin/"+file)}
+  function preloadLook(groupIndex,itemIndex){var image=new Image();image.src=lookSrc(METAL_LOOKS[groupIndex][itemIndex])}
+  function updateCarousel(groupIndex,nextIndex,direction){
+    var files=METAL_LOOKS[groupIndex],index=(nextIndex+files.length)%files.length,card=document.querySelector('[data-carousel="'+groupIndex+'"]');
+    if(!card){return}
+    carouselIndexes[groupIndex]=index;
+    var image=card.querySelector(".carousel-image"),counter=card.querySelector(".carousel-counter"),dots=card.querySelectorAll(".carousel-dot");
+    image.classList.remove("slide-from-left","slide-from-right");void image.offsetWidth;
+    image.src=lookSrc(files[index]);image.alt="金系美甲第 "+(groupIndex+1)+" 组，第 "+(index+1)+" 款";
+    image.classList.add(direction<0?"slide-from-left":"slide-from-right");counter.textContent=(index+1)+" / "+files.length;
+    dots.forEach(function(dot,dotIndex){dot.classList.toggle("active",dotIndex===index)});
+    preloadLook(groupIndex,(index+1)%files.length);
+  }
+  function renderMetalCarousels(){
+    var stack=document.getElementById("carouselStack");stack.innerHTML="";
+    METAL_LOOKS.forEach(function(files,groupIndex){
+      carouselIndexes[groupIndex]=0;
+      var article=document.createElement("article");article.className="carousel-group";article.dataset.carousel=groupIndex;
+      var number=String(groupIndex+1).padStart(2,"0");
+      article.innerHTML='<div class="carousel-group-head"><span>LOOK '+number+'</span><i></i><small>共 '+files.length+' 款</small></div>'+
+        '<div class="carousel-frame"><img class="carousel-image" src="'+lookSrc(files[0])+'" alt="金系美甲第 '+(groupIndex+1)+' 组，第 1 款" loading="lazy" decoding="async">'+
+        '<div class="carousel-vignette"></div><div class="carousel-caption"><div><small>METAL NAIL EDIT</small><strong>金系 · LOOK '+number+'</strong></div><span class="carousel-counter">1 / '+files.length+'</span></div>'+
+        '<button class="carousel-arrow prev" type="button" aria-label="查看上一款"><img src="assets/icons/chevron-left.svg" alt=""></button>'+
+        '<button class="carousel-arrow next" type="button" aria-label="查看下一款"><img src="assets/icons/chevron-right.svg" alt=""></button>'+
+        '<div class="carousel-progress">'+files.map(function(_,index){return '<span class="carousel-dot'+(index===0?' active':'')+'"></span>'}).join('')+'</div></div>'+
+        '<p class="carousel-hint">左右滑动查看本组款式</p>';
+      article.querySelector(".prev").addEventListener("click",function(){updateCarousel(groupIndex,carouselIndexes[groupIndex]-1,-1)});
+      article.querySelector(".next").addEventListener("click",function(){updateCarousel(groupIndex,carouselIndexes[groupIndex]+1,1)});
+      var frame=article.querySelector(".carousel-frame"),startX=0,startY=0,tracking=false;
+      frame.addEventListener("pointerdown",function(event){if(event.target.closest(".carousel-arrow")){return}tracking=true;startX=event.clientX;startY=event.clientY;frame.setPointerCapture(event.pointerId)});
+      frame.addEventListener("pointerup",function(event){if(!tracking){return}tracking=false;var dx=event.clientX-startX,dy=event.clientY-startY;if(Math.abs(dx)>48&&Math.abs(dx)>Math.abs(dy)){updateCarousel(groupIndex,carouselIndexes[groupIndex]+(dx<0?1:-1),dx<0?1:-1)}});
+      stack.appendChild(article);preloadLook(groupIndex,files.length>1?1:0);
     });
   }
   var pickedYear=1990,pickedMonth=7,now=new Date().getFullYear();
@@ -83,25 +101,23 @@
     e.colors.forEach(function(c){var item=document.createElement("div");item.className="swatch";item.innerHTML='<div class="swatch-color" style="background:'+c[1]+'"></div><span class="swatch-name">'+c[0]+'</span>';sw.appendChild(item)});
     var fl=document.getElementById("fortunes");fl.innerHTML="";
     e.fortunes.forEach(function(f){var li=document.createElement("li");li.className="fortune-item";li.innerHTML='<div><strong>'+f[0]+'</strong><span>'+f[1]+'</span></div>';fl.appendChild(li)});
-    var inspiration=document.getElementById("nailInspiration");
-    if(r.elem==="金"){renderMetalLooks(0)}else{inspiration.hidden=true;document.getElementById("lookTabs").innerHTML="";document.getElementById("lookGallery").innerHTML=""}
     document.body.classList.add("result-mode");document.getElementById("result").classList.add("show");window.scrollTo({top:0,behavior:"smooth"});
   }
-  function reset(){document.body.classList.remove("result-mode");document.getElementById("result").classList.remove("show");window.scrollTo({top:0,behavior:"smooth"})}
+  function reset(){document.body.classList.remove("result-mode");document.getElementById("result").classList.remove("show");showView("natal",false);setTimeout(function(){document.getElementById("formPanel").scrollIntoView({behavior:"smooth",block:"start"})},80)}
   document.getElementById("go").addEventListener("click",render);
   document.getElementById("resultBack").addEventListener("click",reset);
   document.getElementById("again").addEventListener("click",reset);
   var guideRail=document.getElementById("guideRail"),conceptDisc=document.getElementById("conceptDisc"),discTimer;
   var guideViews={
-    concept:{kicker:"五行关系",main:"相生",sub:"顺序相生 · 隔位相克",background:"rgba(45,66,47,.82)"},
-    natal:{kicker:"本命推演",main:"本命",sub:"出生年份 · 月份",background:"rgba(35,44,36,.82)"},
-    palette:{kicker:"美甲色谱",main:"五色",sub:"青绿 · 暖红 · 大地",background:"rgba(112,82,52,.82)"},
-    fortune:{kicker:"运势方向",main:"五运",sub:"事业 · 人缘 · 健康",background:"rgba(68,57,45,.84)"}
+    fortune:{kicker:"五行运势",main:"顺势",sub:"知强弱 · 取平衡",background:"rgba(68,57,45,.84)",panel:"fortunePanel"},
+    natal:{kicker:"本命推演",main:"本命",sub:"出生年份 · 月份",background:"rgba(35,44,36,.82)",panel:"formPanel"},
+    styles:{kicker:"五行款式",main:"五色",sub:"木 · 火 · 土 · 金 · 水",background:"rgba(112,82,52,.82)",panel:"stylesPanel"}
   };
-  function updateGuide(button){
-    var view=button.dataset.view,data=guideViews[view];
+  function showView(view,shouldScroll){
+    var data=guideViews[view],button=document.querySelector('[data-view="'+view+'"]');
     document.querySelectorAll(".guide-tag").forEach(function(item){var active=item===button;item.classList.toggle("active",active);item.setAttribute("aria-current",active?"true":"false")});
     guideRail.style.setProperty("--active-index",button.dataset.index);
+    document.querySelectorAll(".content-panel").forEach(function(panel){panel.hidden=panel.id!==data.panel});
     clearTimeout(discTimer);conceptDisc.classList.add("is-changing");
     discTimer=setTimeout(function(){
       document.getElementById("discKicker").textContent=data.kicker;
@@ -110,11 +126,17 @@
       conceptDisc.style.background=data.background;
       conceptDisc.classList.remove("is-changing");
     },170);
-    if(view==="natal"){setTimeout(function(){document.getElementById("formPanel").scrollIntoView({behavior:"smooth",block:"center"})},260)}
+    if(shouldScroll!==false){setTimeout(function(){document.getElementById(data.panel).scrollIntoView({behavior:"smooth",block:"start"})},260)}
   }
-  document.querySelectorAll(".guide-tag").forEach(function(button){button.addEventListener("click",function(){updateGuide(button)})});
+  document.querySelectorAll(".guide-tag").forEach(function(button){button.addEventListener("click",function(){showView(button.dataset.view,true)})});
+  document.querySelectorAll(".element-choice").forEach(function(button){button.addEventListener("click",function(){
+    var element=button.dataset.element,isMetal=element==="金";
+    document.querySelectorAll(".element-choice").forEach(function(item){var active=item===button;item.classList.toggle("active",active);item.setAttribute("aria-selected",active?"true":"false")});
+    document.getElementById("stylesEmpty").hidden=isMetal;
+    document.getElementById("metalShowcase").hidden=!isMetal;
+    if(isMetal){renderMetalCarousels();setTimeout(function(){document.getElementById("metalShowcase").scrollIntoView({behavior:"smooth",block:"start"})},140)}else{
+      var empty=document.getElementById("stylesEmpty");empty.querySelector("span").textContent=element+" · ELEMENT LOOKS";empty.querySelector("p").textContent=element+"系款式正在整理中，先为你保留这份期待。";
+    }
+  })});
   document.querySelector(".guide-tag.active").setAttribute("aria-current","true");
 })();
-
-
-
