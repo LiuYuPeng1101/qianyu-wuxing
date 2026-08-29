@@ -8,6 +8,33 @@
     "金":{color:"#a68651",soft:"#d9cfb8",title:"决断、偏财、清晰思路、提升判断力",note:"金色偏阳金，银色偏阴金；用清晰、利落的质感建立边界与秩序",organ:"肺部",palette:"金色偏阳金 · 银色偏阴金",colors:[["纯白","#f2efe6"],["奶白","#e9dfcf"],["银","#bfc1bc"],["铂金","#cbc6ba"],["香槟金","#c9aa70"],["冷灰","#979b98"],["珍珠白","#eee7da"]],fortunes:[["事业运","增强决断力、提升话语权、竞争取胜"],["人际边界与优质贵人人脉","更清楚地筛选关系与合作"],["情绪与健康调理","金主肺、呼吸道、皮肤"]]},
     "水":{color:"#374f54",soft:"#a9c1c1",title:"智慧、灵动、柔韧多变",note:"以柔克刚、洞察人心，在变化中保持流动与清醒",organ:"肾部",palette:"白色、银色",colors:[["纯黑","#202626"],["藏青","#263c48"],["深海蓝","#315260"],["墨蓝","#334a57"],["冷调炭灰","#626b6a"],["浅湖蓝","#9fbfc2"]],fortunes:[["事业运","开拓客源、提升谋略、抓住流动机遇"],["人际人缘与温柔正缘桃花","增强柔和、细腻的沟通力"],["情绪与健康调理","水主肾、精气"],["思维智慧","创作、策划、考试、谈判时更灵活"],["疏通财源","提升流动正财"]]}
   };
+  var METAL_LOOKS=[
+    ["1 (1).png","1 (2).png","1 (3).png"],
+    ["2 (1).png","2 (2).png","2 (3).png"],
+    ["3-1.png","3-2.png","3-3.png"],
+    ["4 (1).png","4 (2).png"],
+    ["5 (1).png","5 (2).png"],
+    ["6 (1).png","6 (2).png","6 (3).png"],
+    ["7 (1).png","7 (2).png","7 (3).png"],
+    ["8 (1).png","8 (2).png","8 (3).png"]
+  ];
+  function renderMetalLooks(activeIndex){
+    var section=document.getElementById("nailInspiration"),tabs=document.getElementById("lookTabs"),gallery=document.getElementById("lookGallery");
+    section.hidden=false;tabs.innerHTML="";gallery.innerHTML="";
+    METAL_LOOKS.forEach(function(files,index){
+      var button=document.createElement("button"),selected=index===activeIndex;
+      button.type="button";button.className="look-tab"+(selected?" active":"");button.setAttribute("role","tab");button.setAttribute("aria-selected",selected?"true":"false");button.textContent=String(index+1).padStart(2,"0");
+      button.addEventListener("click",function(){renderMetalLooks(index)});
+      tabs.appendChild(button);
+    });
+    var selectedFiles=METAL_LOOKS[activeIndex];
+    gallery.className="look-gallery count-"+selectedFiles.length;
+    selectedFiles.forEach(function(file,index){
+      var figure=document.createElement("figure"),image=document.createElement("img"),caption=document.createElement("figcaption");
+      figure.className="look-card";image.src=encodeURI("meijia/jin/"+file);image.alt="金系美甲方案 "+(activeIndex+1)+" · 款式 "+(index+1);image.loading="lazy";image.decoding="async";
+      caption.textContent="款式 "+String(index+1).padStart(2,"0");figure.appendChild(image);figure.appendChild(caption);gallery.appendChild(figure);
+    });
+  }
   var pickedYear=1990,pickedMonth=7,now=new Date().getFullYear();
   function closePickers(except){
     document.querySelectorAll(".picker.open").forEach(function(picker){
@@ -56,6 +83,8 @@
     e.colors.forEach(function(c){var item=document.createElement("div");item.className="swatch";item.innerHTML='<div class="swatch-color" style="background:'+c[1]+'"></div><span class="swatch-name">'+c[0]+'</span>';sw.appendChild(item)});
     var fl=document.getElementById("fortunes");fl.innerHTML="";
     e.fortunes.forEach(function(f){var li=document.createElement("li");li.className="fortune-item";li.innerHTML='<div><strong>'+f[0]+'</strong><span>'+f[1]+'</span></div>';fl.appendChild(li)});
+    var inspiration=document.getElementById("nailInspiration");
+    if(r.elem==="金"){renderMetalLooks(0)}else{inspiration.hidden=true;document.getElementById("lookTabs").innerHTML="";document.getElementById("lookGallery").innerHTML=""}
     document.body.classList.add("result-mode");document.getElementById("result").classList.add("show");window.scrollTo({top:0,behavior:"smooth"});
   }
   function reset(){document.body.classList.remove("result-mode");document.getElementById("result").classList.remove("show");window.scrollTo({top:0,behavior:"smooth"})}
