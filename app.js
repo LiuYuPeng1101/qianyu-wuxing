@@ -19,16 +19,59 @@
     ["8 (1).png","8 (2).png","8 (3).png"]
   ];
   var carouselIndexes=METAL_LOOKS.map(function(){return 0});
+  var viewer=document.getElementById("imageViewer"),viewerStage=document.getElementById("viewerStage"),viewerImage=document.getElementById("viewerImage"),viewerScale=1,viewerX=0,viewerY=0,viewerTrigger=null,viewerPointers=new Map(),pinchDistance=0,pinchScale=1;
   function lookSrc(file){return encodeURI("meijia/jin/"+file)}
   function preloadLook(groupIndex,itemIndex){var image=new Image();image.src=lookSrc(METAL_LOOKS[groupIndex][itemIndex])}
+  function applyViewerTransform(){
+    if(!viewerImage){return}
+    viewerImage.style.transform="translate3d("+viewerX+"px,"+viewerY+"px,0) scale("+viewerScale+")";
+    viewerStage.classList.toggle("is-zoomed",viewerScale>1.01);
+  }
+  function resetViewer(){viewerScale=1;viewerX=0;viewerY=0;applyViewerTransform()}
+  function zoomViewer(nextScale,clientX,clientY){
+    var oldScale=viewerScale,newScale=Math.max(1,Math.min(4,nextScale));
+    if(newScale===oldScale){return}
+    if(clientX!==undefined&&clientY!==undefined){
+      var rect=viewerStage.getBoundingClientRect(),pointX=clientX-rect.left-rect.width/2,pointY=clientY-rect.top-rect.height/2,ratio=newScale/oldScale;
+      viewerX=pointX-(pointX-viewerX)*ratio;viewerY=pointY-(pointY-viewerY)*ratio;
+    }
+    viewerScale=newScale;if(viewerScale===1){viewerX=0;viewerY=0}applyViewerTransform();
+  }
+  function openViewer(image){
+    if(!viewer){return}
+    viewerTrigger=image.closest(".carousel-open")||image;viewerImage.src=image.currentSrc||image.src;viewerImage.alt=image.alt;resetViewer();viewer.hidden=false;document.body.classList.add("image-viewer-open");
+    requestAnimationFrame(function(){viewer.classList.add("open");viewerStage.focus()});
+  }
+  function closeViewer(){
+    if(!viewer||viewer.hidden){return}
+    viewer.classList.remove("open");document.body.classList.remove("image-viewer-open");viewerPointers.clear();
+    setTimeout(function(){viewer.hidden=true;viewerImage.src="data:,";if(viewerTrigger){viewerTrigger.focus()}},220);
+  }
+  if(viewer){
+    document.getElementById("viewerClose").addEventListener("click",closeViewer);
+    document.getElementById("viewerReset").addEventListener("click",resetViewer);
+    document.getElementById("viewerZoomIn").addEventListener("click",function(){zoomViewer(viewerScale+.5)});
+    document.getElementById("viewerZoomOut").addEventListener("click",function(){zoomViewer(viewerScale-.5)});
+    viewerStage.addEventListener("dblclick",function(event){zoomViewer(viewerScale>1.01?1:2.25,event.clientX,event.clientY)});
+    viewerStage.addEventListener("wheel",function(event){event.preventDefault();zoomViewer(viewerScale+(event.deltaY<0 ? .35 : -.35),event.clientX,event.clientY)},{passive:false});
+    viewerStage.addEventListener("pointerdown",function(event){viewerPointers.set(event.pointerId,{x:event.clientX,y:event.clientY});viewerStage.setPointerCapture(event.pointerId);viewerStage.classList.add("is-dragging");if(viewerPointers.size===2){var points=Array.from(viewerPointers.values());pinchDistance=Math.hypot(points[0].x-points[1].x,points[0].y-points[1].y);pinchScale=viewerScale}});
+    viewerStage.addEventListener("pointermove",function(event){
+      var previous=viewerPointers.get(event.pointerId);if(!previous){return}viewerPointers.set(event.pointerId,{x:event.clientX,y:event.clientY});
+      if(viewerPointers.size===2&&pinchDistance>0){var points=Array.from(viewerPointers.values()),distance=Math.hypot(points[0].x-points[1].x,points[0].y-points[1].y);zoomViewer(pinchScale*(distance/pinchDistance));}
+      else if(viewerScale>1.01){viewerX+=event.clientX-previous.x;viewerY+=event.clientY-previous.y;applyViewerTransform()}
+    });
+    function releaseViewerPointer(event){viewerPointers.delete(event.pointerId);if(viewerPointers.size<2){pinchDistance=0;pinchScale=viewerScale}if(viewerPointers.size===0){viewerStage.classList.remove("is-dragging")}}
+    viewerStage.addEventListener("pointerup",releaseViewerPointer);viewerStage.addEventListener("pointercancel",releaseViewerPointer);
+    document.addEventListener("keydown",function(event){if(viewer.hidden){return}if(event.key==="Escape"){closeViewer()}else if(event.key==="+"||event.key==="="){zoomViewer(viewerScale+.5)}else if(event.key==="-"){zoomViewer(viewerScale-.5)}else if(event.key==="0"){resetViewer()}});
+  }
   function updateCarousel(groupIndex,nextIndex,direction){
     var files=METAL_LOOKS[groupIndex],index=(nextIndex+files.length)%files.length,card=document.querySelector('[data-carousel="'+groupIndex+'"]');
     if(!card){return}
     carouselIndexes[groupIndex]=index;
-    var image=card.querySelector(".carousel-image"),counter=card.querySelector(".carousel-counter"),dots=card.querySelectorAll(".carousel-dot");
+    var image=card.querySelector(".carousel-image"),dots=card.querySelectorAll(".carousel-dot");
     image.classList.remove("slide-from-left","slide-from-right");void image.offsetWidth;
     image.src=lookSrc(files[index]);image.alt="金系美甲第 "+(groupIndex+1)+" 组，第 "+(index+1)+" 款";
-    image.classList.add(direction<0?"slide-from-left":"slide-from-right");counter.textContent=(index+1)+" / "+files.length;
+    image.classList.add(direction<0?"slide-from-left":"slide-from-right");
     dots.forEach(function(dot,dotIndex){dot.classList.toggle("active",dotIndex===index)});
     preloadLook(groupIndex,(index+1)%files.length);
   }
@@ -39,17 +82,20 @@
       var article=document.createElement("article");article.className="carousel-group";article.dataset.carousel=groupIndex;
       var number=String(groupIndex+1).padStart(2,"0");
       article.innerHTML='<div class="carousel-group-head"><span>LOOK '+number+'</span><i></i><small>共 '+files.length+' 款</small></div>'+
-        '<div class="carousel-frame"><img class="carousel-image" src="'+lookSrc(files[0])+'" alt="金系美甲第 '+(groupIndex+1)+' 组，第 1 款" loading="lazy" decoding="async">'+
-        '<div class="carousel-vignette"></div><div class="carousel-caption"><div><small>METAL NAIL EDIT</small><strong>金系 · LOOK '+number+'</strong></div><span class="carousel-counter">1 / '+files.length+'</span></div>'+
+        '<div class="carousel-frame"><button class="carousel-open" type="button" aria-label="放大查看第 '+(groupIndex+1)+' 组美甲图片"><img class="carousel-image" src="'+lookSrc(files[0])+'" alt="金系美甲第 '+(groupIndex+1)+' 组，第 1 款" loading="lazy" decoding="async"></button>'+
+        '<div class="carousel-vignette"></div><div class="carousel-caption"><strong class="carousel-price">￥680</strong></div>'+
         '<button class="carousel-arrow prev" type="button" aria-label="查看上一款"><img src="assets/icons/chevron-left.svg" alt=""></button>'+
         '<button class="carousel-arrow next" type="button" aria-label="查看下一款"><img src="assets/icons/chevron-right.svg" alt=""></button>'+
         '<div class="carousel-progress">'+files.map(function(_,index){return '<span class="carousel-dot'+(index===0?' active':'')+'"></span>'}).join('')+'</div></div>'+
-        '<p class="carousel-hint">左右滑动查看本组款式</p>';
+        '<p class="carousel-hint">左右滑动切换 · 点击图片放大查看</p>';
       article.querySelector(".prev").addEventListener("click",function(){updateCarousel(groupIndex,carouselIndexes[groupIndex]-1,-1)});
       article.querySelector(".next").addEventListener("click",function(){updateCarousel(groupIndex,carouselIndexes[groupIndex]+1,1)});
-      var frame=article.querySelector(".carousel-frame"),startX=0,startY=0,tracking=false;
-      frame.addEventListener("pointerdown",function(event){if(event.target.closest(".carousel-arrow")){return}tracking=true;startX=event.clientX;startY=event.clientY;frame.setPointerCapture(event.pointerId)});
-      frame.addEventListener("pointerup",function(event){if(!tracking){return}tracking=false;var dx=event.clientX-startX,dy=event.clientY-startY;if(Math.abs(dx)>48&&Math.abs(dx)>Math.abs(dy)){updateCarousel(groupIndex,carouselIndexes[groupIndex]+(dx<0?1:-1),dx<0?1:-1)}});
+      var frame=article.querySelector(".carousel-frame"),openButton=article.querySelector(".carousel-open"),startX=0,startY=0,tracking=false,suppressOpen=false;
+      frame.addEventListener("pointerdown",function(event){if(event.target.closest(".carousel-arrow")){return}tracking=true;suppressOpen=false;startX=event.clientX;startY=event.clientY});
+      frame.addEventListener("pointermove",function(event){if(tracking&&!suppressOpen&&Math.hypot(event.clientX-startX,event.clientY-startY)>10){suppressOpen=true;frame.setPointerCapture(event.pointerId)}});
+      frame.addEventListener("pointerup",function(event){if(!tracking){return}tracking=false;var dx=event.clientX-startX,dy=event.clientY-startY;if(Math.abs(dx)>48&&Math.abs(dx)>Math.abs(dy)){suppressOpen=true;updateCarousel(groupIndex,carouselIndexes[groupIndex]+(dx<0?1:-1),dx<0?1:-1)}});
+      frame.addEventListener("pointercancel",function(){tracking=false;suppressOpen=true});
+      openButton.addEventListener("click",function(event){if(suppressOpen){event.preventDefault();suppressOpen=false;return}openViewer(openButton.querySelector(".carousel-image"))});
       stack.appendChild(article);preloadLook(groupIndex,files.length>1?1:0);
     });
   }
