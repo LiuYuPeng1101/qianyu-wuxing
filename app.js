@@ -24,7 +24,7 @@
   function preloadLook(groupIndex,itemIndex){var image=new Image();image.src=lookSrc(METAL_LOOKS[groupIndex][itemIndex])}
   function applyViewerTransform(){
     if(!viewerImage){return}
-    viewerImage.style.transform="translate3d("+viewerX+"px,"+viewerY+"px,0) scale("+viewerScale+")";
+    viewerImage.style.transform="translate("+viewerX+"px,"+viewerY+"px) scale("+viewerScale+")";
     viewerStage.classList.toggle("is-zoomed",viewerScale>1.01);
   }
   function resetViewer(){viewerScale=1;viewerX=0;viewerY=0;applyViewerTransform()}
@@ -39,13 +39,18 @@
   }
   function openViewer(image){
     if(!viewer){return}
-    viewerTrigger=image.closest(".carousel-open")||image;viewerImage.src=image.currentSrc||image.src;viewerImage.alt=image.alt;resetViewer();viewer.hidden=false;document.body.classList.add("image-viewer-open");
+    var source=image.currentSrc||image.src;
+    viewerTrigger=image.closest(".carousel-open")||image;viewerImage.alt=image.alt;viewer.hidden=false;viewer.classList.remove("has-error");viewer.classList.add("is-loading");document.body.classList.add("image-viewer-open");resetViewer();
+    viewerImage.onload=function(){viewer.classList.remove("is-loading","has-error")};
+    viewerImage.onerror=function(){viewer.classList.remove("is-loading");viewer.classList.add("has-error")};
+    viewerImage.src=source;
+    if(viewerImage.complete&&viewerImage.naturalWidth){viewer.classList.remove("is-loading","has-error")}
     requestAnimationFrame(function(){viewer.classList.add("open");viewerStage.focus()});
   }
   function closeViewer(){
     if(!viewer||viewer.hidden){return}
     viewer.classList.remove("open");document.body.classList.remove("image-viewer-open");viewerPointers.clear();
-    setTimeout(function(){viewer.hidden=true;viewerImage.src="data:,";if(viewerTrigger){viewerTrigger.focus()}},220);
+    setTimeout(function(){viewer.hidden=true;viewer.classList.remove("is-loading","has-error");viewerImage.onload=null;viewerImage.onerror=null;viewerImage.removeAttribute("src");if(viewerTrigger){viewerTrigger.focus()}},220);
   }
   if(viewer){
     document.getElementById("viewerClose").addEventListener("click",closeViewer);
