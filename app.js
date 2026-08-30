@@ -53,10 +53,10 @@
     ],
     "水":[
       ["1-1.png","1-2.png","1-3.png"],
-      ["2.png","2-1.png","2-2.png"],
+      ["2-1.png","2-2.png"],
       ["3-1.png","3-2.png","3-3.png"],
       ["4-1.png","4-2.png","4-3.png"],
-      ["5-1.png"],
+      ["2.png","5-1.png"],
       ["6-1.png","6-2.png"],
       ["7-1.png","7-2.png","7-3.png"],
       ["8-1.png","8-2.png"],
@@ -139,7 +139,7 @@
       var number=String(groupIndex+1).padStart(2,"0");
       article.innerHTML='<div class="carousel-group-head"><span>LOOK '+number+'</span><i></i><small>共 '+files.length+' 款</small></div>'+
         '<div class="carousel-frame"><button class="carousel-open" type="button" aria-label="放大查看第 '+(groupIndex+1)+' 组美甲图片"><img class="carousel-image" src="'+lookSrc(element,files[0])+'" alt="'+element+'系美甲第 '+(groupIndex+1)+' 组，第 1 款" loading="lazy" decoding="async"></button>'+
-        '<div class="carousel-vignette"></div><div class="carousel-caption"><strong class="carousel-price">￥680</strong></div>'+
+        '<div class="carousel-vignette"></div>'+
         '<button class="carousel-arrow prev" type="button" aria-label="查看上一款"><img src="assets/icons/chevron-left.svg" alt=""></button>'+
         '<button class="carousel-arrow next" type="button" aria-label="查看下一款"><img src="assets/icons/chevron-right.svg" alt=""></button>'+
         '<div class="carousel-progress">'+files.map(function(_,index){return '<span class="carousel-dot'+(index===0?' active':'')+'"></span>'}).join('')+'</div></div>'+
