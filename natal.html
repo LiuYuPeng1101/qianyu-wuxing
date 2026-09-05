@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#263028">
 <title>本命推演 · 千屿优奈</title>
-<link rel="icon" href="data:,">
+<link rel="icon" href="assets/qianyu-younai-logo.png" type="image/png">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body class="subpage natal-page">
@@ -13,23 +13,31 @@
   <header class="page-top natal-top">
     <a class="page-back" href="index.html">返回首页</a>
     <img src="assets/qianyu-younai-logo.png" alt="千屿优奈">
-    <div class="page-top-copy"><span>NATAL ELEMENT · 本命推演</span><h1>推演你的<br>本命五行</h1><p>以出生年份与月份，寻找专属能量色</p></div>
+    <div class="page-top-copy"><span>NATAL ELEMENT · 本命推演</span><h1>推演你的<br>本命五行</h1><p>了解五行流转，以出生年月日开启本命推演</p></div>
   </header>
+  <section class="fortune-intro inner-content content-panel">
+    <div class="panel-eyebrow">01 · FORTUNE PRINCIPLE</div>
+    <div class="fortune-intro-grid"><h2>五行流转，<br>映照当下状态</h2><span class="fortune-mark">五运</span></div>
+    <p>五行运势不是简单地“缺什么补什么”，而是观察木、火、土、金、水在当下的强弱与流动。顺势选色，可以借木的生发、火的表达、土的稳定、金的决断、水的智慧，帮助你在事业、人缘、情绪与行动节奏中找到更协调的状态。美甲在这里是一种日常提醒：用适合自己的颜色与质感强化优势，也为失衡之处留出调整空间。</p>
+    <div class="fortune-principles" aria-label="五行运势原则"><span><b>01</b>观强弱</span><span><b>02</b>取平衡</span><span><b>03</b>顺时势</span></div>
+    <a class="page-cta" href="#formPanel">填写出生信息</a>
+  </section>
   <section class="form-panel" id="formPanel">
     <div class="form-head"><div class="form-title">推演你的本命五行</div><div class="form-sub">阳历出生信息</div></div>
     <div class="field-row">
-      <div class="field"><label>出生年份</label><div class="picker" id="yearPicker"><button class="picker-button" id="yearButton" type="button" aria-haspopup="listbox" aria-expanded="false"><span class="picker-value">1990 年</span><span class="picker-action">更改</span></button><div class="picker-menu year-menu" id="yearMenu" role="listbox" aria-label="出生年份"></div></div></div>
-      <div class="field"><label>出生月份</label><div class="picker" id="monthPicker"><button class="picker-button" id="monthButton" type="button" aria-haspopup="listbox" aria-expanded="false"><span class="picker-value">7 月</span><span class="picker-action">更改</span></button><div class="picker-menu month-menu" id="monthMenu" role="listbox" aria-label="出生月份"></div></div></div>
+      <div class="field"><label for="yearButton">出生年份</label><div class="picker" id="yearPicker"><button class="picker-button" id="yearButton" type="button" aria-haspopup="listbox" aria-expanded="false"><span class="picker-value">1990 年</span><span class="picker-action">更改</span></button><div class="picker-menu year-menu" id="yearMenu" role="listbox" aria-label="出生年份"></div></div></div>
+      <div class="field"><label for="monthButton">出生月份</label><div class="picker" id="monthPicker"><button class="picker-button" id="monthButton" type="button" aria-haspopup="listbox" aria-expanded="false"><span class="picker-value">7 月</span><span class="picker-action">更改</span></button><div class="picker-menu month-menu" id="monthMenu" role="listbox" aria-label="出生月份"></div></div></div>
+      <div class="field"><label for="dayButton">出生日期</label><div class="picker" id="dayPicker"><button class="picker-button" id="dayButton" type="button" aria-haspopup="listbox" aria-expanded="false"><span class="picker-value">1 日</span><span class="picker-action">更改</span></button><div class="picker-menu day-menu" id="dayMenu" role="listbox" aria-label="出生日期"></div></div></div>
     </div>
     <button class="go" id="go" type="button">开始推演</button>
-    <div class="form-note">年命以立春为界 · 一月出生自动归入上一年命</div>
+    <div class="form-note">当前按年份与月份简化推演年命，一月归入上一年；日期用于展示出生信息。</div>
   </section>
   <section class="result" id="result" aria-live="polite">
     <div class="result-cover">
       <img class="result-photo" src="assets/qianyu-hero-v2.png" alt="">
       <div class="photo-shade"></div><div class="photo-grain"></div>
       <div class="result-nav"><button class="back" id="resultBack" type="button">返回推演</button><div class="result-brand"><img src="assets/qianyu-younai-logo.png" alt="千屿优奈"></div><div class="result-meta"><strong id="resultYear"></strong><span id="ganzhi"></span></div></div>
-      <div class="result-hero"><div class="element-seal" id="seal"></div><div class="result-heading"><div class="overline">YOUR ELEMENT · 五行能量档案</div><h2 id="resultTitle"></h2><p id="resultNayin"></p></div></div>
+      <div class="result-hero"><div class="element-seal" id="seal"></div><div class="result-heading"><div class="overline">YOUR ELEMENT · 五行能量档案</div><h2 id="resultTitle"></h2><p id="resultNayin"></p><p id="resultBirthdate"></p></div></div>
     </div>
     <div class="result-sheet">
       <div class="section-eyebrow">01 · CORE ATTRIBUTE</div>
@@ -45,3 +53,4 @@
 <script src="app.js"></script>
 </body>
 </html>
+

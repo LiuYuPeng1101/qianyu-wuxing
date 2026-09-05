@@ -16,8 +16,7 @@
       ["2 (1).png","2 (2).png","2 (3).png"],
       ["3 (1).png","3 (2).png"],
       ["4 (1).png","4 (2).png","4（3）.png"],
-      ["5 (1).png","5 (2).png","5 (3).png"],
-      ["6.png"],["7.png"],["8.png"],["9.png"],["10.png"],["11.png"],["12.png"]
+      ["6.png"],["7.png"],["8.png"],["9.png","11.png"],["10.png"]
     ],
     "火":[
       ["1.png","1-1.png","1-2.png"],
@@ -87,7 +86,7 @@
   function openViewer(image){
     if(!viewer){return}
     var source=image.currentSrc||image.src;
-    viewerTrigger=image.closest(".carousel-open")||image;viewerImage.alt=image.alt;viewer.hidden=false;viewer.classList.remove("has-error");viewer.classList.add("is-loading");document.body.classList.add("image-viewer-open");resetViewer();
+    viewerTrigger=image.closest(".carousel-open, .monthly-open")||image;viewerImage.alt=image.alt;viewer.hidden=false;viewer.classList.remove("has-error");viewer.classList.add("is-loading");document.body.classList.add("image-viewer-open");resetViewer();
     viewerImage.onload=function(){viewer.classList.remove("is-loading","has-error")};
     viewerImage.onerror=function(){viewer.classList.remove("is-loading");viewer.classList.add("has-error")};
     viewerImage.src=source;
@@ -157,7 +156,8 @@
       stack.appendChild(article);if(files.length>1){preloadLook(element,groupIndex,1)}
     });
   }
-  var pickedYear=1990,pickedMonth=7,now=new Date().getFullYear();
+  document.querySelectorAll(".monthly-open").forEach(function(button){button.addEventListener("click",function(){openViewer(button.querySelector("img"))})});
+  var pickedYear=1990,pickedMonth=7,pickedDay=1,now=new Date().getFullYear();
   if(document.getElementById("yearPicker")){
   function closePickers(except){
     document.querySelectorAll(".picker.open").forEach(function(picker){
@@ -166,6 +166,7 @@
   }
   function buildPicker(id,values,formatter,initial,onChange){
     var picker=document.getElementById(id),button=picker.querySelector(".picker-button"),menu=picker.querySelector(".picker-menu"),valueLabel=picker.querySelector(".picker-value");
+    menu.innerHTML="";valueLabel.textContent=formatter(initial);
     values.forEach(function(value){
       var option=document.createElement("button");
       option.type="button";option.className="picker-option";option.setAttribute("role","option");option.dataset.value=value;option.textContent=formatter(value);
@@ -177,15 +178,22 @@
       });
       menu.appendChild(option);
     });
-    button.addEventListener("click",function(event){
+    button.onclick=function(event){
       event.stopPropagation();var opening=!picker.classList.contains("open");closePickers(picker);picker.classList.toggle("open",opening);button.setAttribute("aria-expanded",opening?"true":"false");
       if(opening){var selected=menu.querySelector(".selected");if(selected){selected.scrollIntoView({block:"center"})}}
-    });
+    };
   }
   var years=[];for(var y=now;y>=1920;y--){years.push(y)}
   var months=[];for(var m=1;m<=12;m++){months.push(m)}
-  buildPicker("yearPicker",years,function(v){return v+" 年"},pickedYear,function(v){pickedYear=v});
-  buildPicker("monthPicker",months,function(v){return v+" 月"},pickedMonth,function(v){pickedMonth=v});
+  buildPicker("yearPicker",years,function(v){return v+" 年"},pickedYear,function(v){pickedYear=v;refreshDays()});
+  buildPicker("monthPicker",months,function(v){return v+" 月"},pickedMonth,function(v){pickedMonth=v;refreshDays()});
+  function refreshDays(){
+    var count=new Date(pickedYear,pickedMonth,0).getDate(),days=[];
+    pickedDay=Math.min(pickedDay,count);
+    for(var day=1;day<=count;day++){days.push(day)}
+    buildPicker("dayPicker",days,function(v){return v+" 日"},pickedDay,function(v){pickedDay=v});
+  }
+  refreshDays();
   document.addEventListener("click",function(){closePickers()});
   document.addEventListener("keydown",function(event){if(event.key==="Escape"){closePickers()}});
   function calc(year,month){var ly=month<=1?year-1:year,idx=((ly-4)%60+60)%60,pair=NAYIN[Math.floor(idx/2)];return{ly:ly,gz:STEMS[idx%10]+BRANCHES[idx%12],zodiac:ZODIAC[idx%12],nayin:pair[0],elem:pair[1]}}
@@ -195,6 +203,7 @@
     document.getElementById("seal").textContent=r.elem;
     document.getElementById("resultTitle").textContent=r.elem+"命 · "+e.title.split("、")[0];
     document.getElementById("resultNayin").textContent="纳音「"+r.nayin+"」· "+r.gz+"年 · 属"+r.zodiac;
+    document.getElementById("resultBirthdate").textContent="阳历生日 · "+pickedYear+"年"+pickedMonth+"月"+pickedDay+"日";
     document.getElementById("resultYear").textContent=r.ly;
     document.getElementById("ganzhi").textContent=r.gz+" · "+r.zodiac;
     document.getElementById("coreTitle").textContent="【"+r.elem+"】主："+e.title;
@@ -248,3 +257,4 @@
     }
   })});
 })();
+

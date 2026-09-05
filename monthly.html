@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#263028">
+<title>本月特推 · 千屿优奈</title>
+<link rel="icon" href="assets/qianyu-younai-logo.png" type="image/png">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body class="subpage monthly-page">
+<main class="app">
+  <header class="page-top monthly-top">
+    <a class="page-back" href="index.html">返回首页</a>
+    <img src="assets/qianyu-younai-logo.png" alt="千屿优奈">
+    <div class="page-top-copy"><span>MONTHLY EDIT · 本月特推</span><h1>maogel<br>指尖的一抹珍珠光</h1><p>清透色泽 · 细腻珠光 · 日式美甲</p></div>
+  </header>
+  <section class="monthly-content inner-content">
+    <div class="panel-eyebrow">01 · THE MAOGEL EDIT</div>
+    <h2>本月，遇见 maogel</h2>
+    <p class="monthly-lead">maogel是来自日本贵妇级品牌！</p>
+    <div class="monthly-copy">
+      <article><h3>品牌亮点</h3><p>在美甲圈被称为“爱马仕”和“天花板”的存在。</p></article>
+      <article><h3>成分安全</h3><p>采用植物提取，添加了珍珠精华粉，是在甲油胶中添加了细腻的珍珠粉，能打造出非常清透、带有高级光泽感的“海莉甲”效果，而且不需要额外蹭粉！</p></article>
+    </div>
+    <div class="monthly-gallery-heading"><span>02 · GALLERY</span><p>点击图片，放大查看细节</p></div>
+    <div class="monthly-grid" aria-label="本月特推图片，按顺序排列">
+      <figure class="monthly-card"><button class="monthly-open" type="button" aria-label="放大查看本月特推第 1 张图片"><img src="assets/monthly/maogel-01.jpg" alt="maogel 品牌证书图片" loading="lazy" decoding="async"></button><figcaption>01</figcaption></figure>
+      <figure class="monthly-card"><button class="monthly-open" type="button" aria-label="放大查看本月特推第 2 张图片"><img src="assets/monthly/maogel-02.jpg" alt="maogel 色板全貌" loading="lazy" decoding="async"></button><figcaption>02</figcaption></figure>
+      <figure class="monthly-card"><button class="monthly-open" type="button" aria-label="放大查看本月特推第 3 张图片"><img src="assets/monthly/maogel-03.jpg" alt="maogel 色板细节" loading="lazy" decoding="async"></button><figcaption>03</figcaption></figure>
+      <figure class="monthly-card"><button class="monthly-open" type="button" aria-label="放大查看本月特推第 4 张图片"><img src="assets/monthly/maogel-04.jpg" alt="珍珠光泽美甲近景" loading="lazy" decoding="async"></button><figcaption>04</figcaption></figure>
+      <figure class="monthly-card"><button class="monthly-open" type="button" aria-label="放大查看本月特推第 5 张图片"><img src="assets/monthly/maogel-05.jpg" alt="珍珠光泽美甲上手效果" loading="lazy" decoding="async"></button><figcaption>05</figcaption></figure>
+      <figure class="monthly-card"><button class="monthly-open" type="button" aria-label="放大查看本月特推第 6 张图片"><img src="assets/monthly/maogel-06.jpg" alt="real perl line 质感细节" loading="lazy" decoding="async"></button><figcaption>06</figcaption></figure>
+    </div>
+    <a class="page-cta muted" href="index.html">返回首页</a>
+  </section>
+</main>
+<div class="image-viewer" id="imageViewer" role="dialog" aria-modal="true" aria-label="美甲款式大图查看" hidden>
+  <div class="viewer-toolbar">
+    <div class="viewer-controls" style="margin-left:auto" aria-label="大图控制">
+      <button class="viewer-button" id="viewerZoomOut" type="button">缩小</button>
+      <button class="viewer-button" id="viewerReset" type="button">复位</button>
+      <button class="viewer-button" id="viewerZoomIn" type="button">放大</button>
+      <button class="viewer-button viewer-close" id="viewerClose" type="button">关闭</button>
+    </div>
+  </div>
+  <div class="viewer-stage" id="viewerStage" tabindex="0">
+    <img class="viewer-image" id="viewerImage" alt="" draggable="false">
+    <p class="viewer-status viewer-loading">图片加载中…</p>
+    <p class="viewer-status viewer-error">图片加载失败，请关闭后重试</p>
+    <p class="viewer-hint">双指或滚轮缩放 · 放大后拖动查看细节</p>
+  </div>
+</div>
+<script src="app.js"></script>
+</body>
+</html>
